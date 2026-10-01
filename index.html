@@ -36,6 +36,73 @@
     display:flex;
     flex-direction:column;
     padding:28px 0;
+    transition:transform 0.25s ease;
+  }
+
+  .sidebar-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(10,16,24,0.55);
+    z-index:999;
+  }
+  .sidebar-overlay.visible{ display:block; }
+
+  .hamburger-btn{
+    display:none;
+    width:34px; height:34px;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:4px;
+    flex-shrink:0;
+  }
+  .hamburger-btn span{
+    display:block;
+    width:20px; height:2px;
+    background:var(--navy);
+    border-radius:2px;
+  }
+
+  @media (max-width: 768px){
+    .sidebar{
+      position:fixed;
+      top:0; left:0;
+      z-index:1000;
+      width:78%;
+      max-width:300px;
+      min-width:0;
+      transform:translateX(-100%);
+      box-shadow:0 0 40px rgba(0,0,0,0.3);
+    }
+    .sidebar.open{
+      transform:translateX(0);
+    }
+    .hamburger-btn{
+      display:flex;
+    }
+    .topbar{
+      padding:0 14px;
+      gap:10px;
+    }
+    .topbar-title{
+      flex:1;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .home{
+      padding:28px 20px;
+    }
+    .home-title{
+      font-size:22px;
+    }
+    .card-grid{
+      grid-template-columns:1fr;
+    }
   }
   .brand{
     padding:0 24px 24px 24px;
@@ -261,7 +328,7 @@
 </head>
 <body>
 
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="brand">
       <img class="brand-mark" src="asobo-logo.png" alt="Asobo AB">
       <div class="brand-title">TOOL HUB</div>
@@ -284,8 +351,13 @@
     <div class="sidebar-footer">TOOL HUB v1.0</div>
   </div>
 
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
   <div class="main">
     <div class="topbar">
+      <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="メニューを開く">
+        <span></span><span></span><span></span>
+      </button>
       <div class="topbar-title" id="topbarTitle">ホーム</div>
       <div class="topbar-actions" id="topbarActions"></div>
     </div>
@@ -314,9 +386,20 @@
     }
   };
 
+  function toggleSidebar(){
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('visible');
+  }
+
+  function closeSidebar(){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+  }
+
   function showTool(key, el){
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     if(el) el.classList.add('active');
+    closeSidebar();
 
     const content = document.getElementById('content');
     const topbarTitle = document.getElementById('topbarTitle');
