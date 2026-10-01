@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOOL HUB</title>
+<style>
+  :root{
+    --navy:#1A2E44;
+    --navy-deep:#12212F;
+    --blue:#185FA5;
+    --blue-soft:#4C86C4;
+    --bg:#F7F8FA;
+    --card:#FFFFFF;
+    --border:#E4E8EE;
+    --text:#1A2E44;
+    --text-mute:#6B7686;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    overflow:hidden;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:260px;
+    min-width:260px;
+    height:100vh;
+    background:linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    padding:28px 0;
+  }
+  .brand{
+    padding:0 24px 24px 24px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    margin-bottom:20px;
+  }
+  .brand-mark{
+    height:44px;
+    width:auto;
+    max-width:100%;
+    object-fit:contain;
+    object-position:left center;
+    display:block;
+    margin-bottom:14px;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+  }
+  .brand-title{
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:0.04em;
+  }
+  .brand-sub{
+    font-size:11px;
+    color:rgba(255,255,255,0.45);
+    margin-top:3px;
+    letter-spacing:0.08em;
+  }
+
+  .nav-section-label{
+    font-size:10.5px;
+    color:rgba(255,255,255,0.35);
+    letter-spacing:0.12em;
+    padding:0 24px;
+    margin:14px 0 8px 0;
+  }
+
+  .nav-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px 24px;
+    margin:2px 12px;
+    border-radius:9px;
+    cursor:pointer;
+    color:rgba(255,255,255,0.72);
+    font-size:14px;
+    font-weight:500;
+    transition:background 0.15s ease, color 0.15s ease;
+    border-left:3px solid transparent;
+    position:relative;
+  }
+  .nav-item .icon{
+    width:20px; text-align:center; font-size:15px; flex-shrink:0;
+  }
+  .nav-item:hover{
+    background:rgba(255,255,255,0.06);
+    color:#fff;
+  }
+  .nav-item.active{
+    background:rgba(24,95,165,0.28);
+    color:#fff;
+  }
+  .nav-item.active::before{
+    content:"";
+    position:absolute;
+    left:-12px; top:8px; bottom:8px;
+    width:3px;
+    border-radius:2px;
+    background:var(--blue-soft);
+  }
+
+  .sidebar-footer{
+    margin-top:auto;
+    padding:16px 24px 4px 24px;
+    font-size:10.5px;
+    color:rgba(255,255,255,0.3);
+    border-top:1px solid rgba(255,255,255,0.08);
+  }
+
+  /* ---------- Main ---------- */
+  .main{
+    flex:1;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .topbar{
+    height:56px;
+    min-height:56px;
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 24px;
+  }
+  .topbar-title{
+    font-size:15px;
+    font-weight:700;
+    color:var(--text);
+  }
+  .topbar-actions{
+    display:flex;
+    gap:10px;
+  }
+  .btn-open{
+    font-size:12.5px;
+    color:var(--blue);
+    text-decoration:none;
+    border:1px solid var(--border);
+    padding:6px 12px;
+    border-radius:7px;
+    transition:background 0.15s ease;
+  }
+  .btn-open:hover{
+    background:#EEF3F9;
+  }
+
+  .content{
+    flex:1;
+    overflow:auto;
+    position:relative;
+  }
+  iframe{
+    width:100%;
+    height:100%;
+    border:none;
+    display:block;
+    background:#fff;
+  }
+
+  /* ---------- Home screen ---------- */
+  .home{
+    height:100%;
+    overflow:auto;
+    padding:48px 56px;
+  }
+  .home-eyebrow{
+    font-size:11.5px;
+    color:var(--blue);
+    font-weight:700;
+    letter-spacing:0.12em;
+    margin-bottom:10px;
+  }
+  .home-title{
+    font-size:30px;
+    font-weight:800;
+    color:var(--navy);
+    margin-bottom:10px;
+    letter-spacing:-0.01em;
+  }
+  .home-desc{
+    font-size:14px;
+    color:var(--text-mute);
+    max-width:560px;
+    line-height:1.7;
+    margin-bottom:36px;
+  }
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:18px;
+    max-width:900px;
+  }
+  .tool-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:22px;
+    cursor:pointer;
+    box-shadow:0 1px 3px rgba(26,46,68,0.05);
+    transition:transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .tool-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 24px rgba(26,46,68,0.10);
+    border-color:var(--blue-soft);
+  }
+  .tool-card-icon{
+    width:42px; height:42px;
+    border-radius:11px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:19px;
+    margin-bottom:16px;
+  }
+  .tool-card-title{
+    font-size:15px;
+    font-weight:700;
+    color:var(--navy);
+    margin-bottom:6px;
+  }
+  .tool-card-desc{
+    font-size:12.5px;
+    color:var(--text-mute);
+    line-height:1.6;
+  }
+
+  .missing-state{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:14px;
+    color:var(--text-mute);
+    font-size:13.5px;
+    text-align:center;
+    padding:40px;
+  }
+  .missing-state .big{
+    font-size:15px;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .missing-state code{
+    background:#EEF1F5;
+    padding:2px 8px;
+    border-radius:5px;
+    font-size:12.5px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="brand">
+      <img class="brand-mark" src="asobo-logo.png" alt="Asobo AB">
+      <div class="brand-title">TOOL HUB</div>
+      <div class="brand-sub">INTERNAL UTILITIES</div>
+    </div>
+
+    <div class="nav-section-label">MENU</div>
+    <div class="nav-item active" data-target="home" onclick="showTool('home', this)">
+      <span class="icon">🏠</span><span>ホーム</span>
+    </div>
+
+    <div class="nav-section-label">TOOLS</div>
+    <div class="nav-item" data-target="tournament" onclick="showTool('tournament', this)">
+      <span class="icon">🏆</span><span>トーナメントビルダー</span>
+    </div>
+    <div class="nav-item" data-target="invoice" onclick="showTool('invoice', this)">
+      <span class="icon">🧾</span><span>請求書ジェネレーター</span>
+    </div>
+
+    <div class="sidebar-footer">TOOL HUB v1.0</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbarTitle">ホーム</div>
+      <div class="topbar-actions" id="topbarActions"></div>
+    </div>
+    <div class="content" id="content">
+      <!-- home content injected here -->
+    </div>
+  </div>
+
+<script>
+  const TOOLS = {
+    tournament: {
+      title: "トーナメントビルダー",
+      file: "tournament-builder.html",
+      icon: "🏆",
+      color: "#DCEBFB",
+      iconColor: "#185FA5",
+      desc: "大会のトーナメント表を作成・管理するためのツールです。"
+    },
+    invoice: {
+      title: "請求書ジェネレーター",
+      file: "invoice-generator.html",
+      icon: "🧾",
+      color: "#FDEBD3",
+      iconColor: "#B9762F",
+      desc: "請求書をブラウザ上で作成し、A4印刷用にプレビュー・出力できます。"
+    }
+  };
+
+  function showTool(key, el){
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if(el) el.classList.add('active');
+
+    const content = document.getElementById('content');
+    const topbarTitle = document.getElementById('topbarTitle');
+    const topbarActions = document.getElementById('topbarActions');
+
+    if(key === 'home'){
+      topbarTitle.textContent = 'ホーム';
+      topbarActions.innerHTML = '';
+      renderHome();
+      return;
+    }
+
+    const tool = TOOLS[key];
+    topbarTitle.textContent = tool.title;
+    topbarActions.innerHTML = `<a class="btn-open" href="${tool.file}" target="_blank" rel="noopener">新しいタブで開く ↗</a>`;
+
+    // Try loading the tool file; if missing, show setup guidance.
+    fetch(tool.file, { method: 'HEAD' })
+      .then(res => {
+        if(res.ok){
+          content.innerHTML = `<iframe src="${tool.file}"></iframe>`;
+        } else {
+          renderMissing(tool);
+        }
+      })
+      .catch(() => {
+        // file:// access often blocks fetch/HEAD checks; fall back to trying the iframe directly.
+        content.innerHTML = `<iframe src="${tool.file}" onerror="renderMissingByKey('${key}')"></iframe>`;
+      });
+  }
+
+  function renderMissingByKey(key){
+    renderMissing(TOOLS[key]);
+  }
+
+  function renderMissing(tool){
+    document.getElementById('content').innerHTML = `
+      <div class="missing-state">
+        <div class="big">「${tool.title}」が見つかりません</div>
+        <div>このフォルダに <code>${tool.file}</code> という名前でファイルを置くと、<br>ここに自動で表示されます。</div>
+      </div>
+    `;
+  }
+
+  function renderHome(){
+    const content = document.getElementById('content');
+    let cards = '';
+    for(const key in TOOLS){
+      const t = TOOLS[key];
+      cards += `
+        <div class="tool-card" onclick="showTool('${key}', document.querySelector('[data-target=\\'${key}\\']'))">
+          <div class="tool-card-icon" style="background:${t.color}; color:${t.iconColor};">${t.icon}</div>
+          <div class="tool-card-title">${t.title}</div>
+          <div class="tool-card-desc">${t.desc}</div>
+        </div>
+      `;
+    }
+
+    content.innerHTML = `
+      <div class="home">
+        <div class="home-eyebrow">TOOL HUB</div>
+        <div class="home-title">よく使うツールへのアクセス</div>
+        <div class="home-desc">左のメニューからツールを選択してください。各ツールはこのページと同じフォルダ内のHTMLファイルとして動作します。</div>
+        <div class="card-grid">
+          ${cards}
+        </div>
+      </div>
+    `;
+  }
+
+  // initial render
+  renderHome();
+</script>
+
+</body>
+</html>
